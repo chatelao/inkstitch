@@ -138,7 +138,9 @@ jobs:
           path: artifacts
   mac:
     runs-on: macos-latest
-    if: ${{ secrets.INKSTITCH_APPLE_DEVELOPER_CERTIFICATE != '' }}
+    env:
+      HAS_MACOS: ${{ secrets.INKSTITCH_APPLE_DEVELOPER_CERTIFICATE != '' }}
+    if: ${{ env.HAS_MACOS == 'true' }}
     steps:
       - uses: actions/checkout@v2
         with:
