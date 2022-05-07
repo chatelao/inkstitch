@@ -1,5 +1,6 @@
 name: Build
 on:
+  workflow_dispatch:
   push:
     branches-ignore:
       - master
@@ -137,6 +138,8 @@ jobs:
           path: artifacts
   mac:
     runs-on: macos-latest
+    env:
+      HAS_MACOS: ${{ secrets.INKSTITCH_APPLE_DEVELOPER_CERTIFICATE != '' }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -176,6 +179,7 @@ jobs:
 
           echo "${{ env.pythonLocation }}/bin" >> $GITHUB_PATH
       - shell: bash
+        if: ${{ env.HAS_MACOS == 'true' }}
         run: |
           make dist
         env:
